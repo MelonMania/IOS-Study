@@ -1,30 +1,40 @@
-//Don't change this code:
+// Define the User struct here
+    struct User{
+        var name : String
+        var email : String?
+        var followers : Int
+        var isActive : Bool
+        
+        func logStatus(){
+            if(self.isActive == true){
+                print("\(name) is working hard")
+            }
+            else{
+                print("\(name) has left earth")
+            }
+        }
+        
+        init(name : String, email : String, followers : Int, isActive : Bool){
+            self.name = name
+            self.email = email
+            self.followers = followers
+            self.isActive = isActive
+        }
+    
+    }
 
-func calculator() {
-  let a = Int(readLine()!)! //First input
-  let b = Int(readLine()!)! //Second input
-  
-  add(n1: a, n2: b)
-  subtract(n1: a, n2: b)
-  multiply(n1: a, n2: b)
-  divide(n1: a, n2: b)
-  
-}
+    // Initialise a User struct here
 
-//Write your code below this line to make the above function calls work.
-func add(n1 : Int, n2 : Int){
-    print(n1+n2)
-}
-func subtract(n1 : Int, n2 : Int){
-    print(n1-n2)
-}
-func multiply(n1 : Int, n2 : Int){
-    print(n1*n2)
-}
-func divide(n1 : Int, n2 : Int){
-    var d1 : Double = Double(n1)
-    var d2 : Double = Double(n2)
-    print(d1/d2)
-}
 
-divide(n1: 3, n2: 4)
+
+
+    // Diagnostic code - do not change this code
+    print("\nDiagnostic code (i.e., Challenge Hint):")
+    var musk = User(name: "Elon", email: "elon@tesla.com", followers: 2001, isActive: true)
+    musk.logStatus()
+    print("Contacting \(musk.name) on \(musk.email!) ...")
+    print("\(musk.name) has \(musk.followers) followers")
+    // sometime later
+    musk.isActive = false
+    musk.logStatus()
+    
