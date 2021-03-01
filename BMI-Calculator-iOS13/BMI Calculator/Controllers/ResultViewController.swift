@@ -14,12 +14,15 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var bmiLabel: UILabel!
     @IBOutlet weak var comment: UILabel!
     
-    var bmiValue : String = ""
-
- 
+    var bmiValue : String?
+    var bmiAdvice : String?
+    var bmiColor : UIColor?
+ 	
     override func viewDidLoad() {
         super.viewDidLoad()
         bmiLabel.text = bmiValue
+        comment.text = bmiAdvice
+        view.backgroundColor = bmiColor
     }
     
     

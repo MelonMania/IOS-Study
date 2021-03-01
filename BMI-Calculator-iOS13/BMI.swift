@@ -9,7 +9,7 @@
 import UIKit
 
 struct BMI{
-    var value : Float
-    let adivce : String
-    let color : UIColor
+    let value : Float?
+    let adivce : String?
+    let color : UIColor?
 }

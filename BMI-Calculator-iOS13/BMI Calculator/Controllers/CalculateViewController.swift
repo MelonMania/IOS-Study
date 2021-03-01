@@ -17,7 +17,8 @@ class CalculateViewController: UIViewController {
     
     
     var calculatorBrain = CalculatorBrain()
-        
+    var bmi : BMI?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -39,7 +40,7 @@ class CalculateViewController: UIViewController {
         let height = heightSlider.value
         let weight = weightSlider.value
         
-        calculatorBrain.calculate(weight: weight, height: height)
+        bmi = calculatorBrain.calculate(weight: weight, height: height)
         
         self.performSegue(withIdentifier: "goToResult", sender: self)
     }
@@ -48,6 +49,9 @@ class CalculateViewController: UIViewController {
         if segue.identifier == "goToResult" {
             let destination = segue.destination as! ResultViewController
             destination.bmiValue = calculatorBrain.getResult()
+            destination.bmiAdvice = bmi?.adivce
+            destination.bmiColor = bmi?.color
+            
         }
     }
     
