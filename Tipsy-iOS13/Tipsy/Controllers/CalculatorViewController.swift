@@ -16,21 +16,16 @@ class CalculatorViewController: UIViewController {
     @IBOutlet weak var twentyPctButton: UIButton!
     @IBOutlet weak var splitNumberLabel: UILabel!
     
-    var pctValue : Float?
+    
+    var calculateBrain = CalculateBrain()
+    
     var stepperValue : Float?
-    var result : Float?
+    var value : Value?
+    var pct : Float?
     
     @IBAction func tipChanged(_ sender: UIButton) {
         sender.isSelected = true
-        if sender.currentTitle == "0%"{
-            pctValue = 0.0
-        }
-        else if sender.currentTitle == "10%"{
-            pctValue = 0.1
-        }
-        else{
-            pctValue = 0.2
-        }
+        pct = calculateBrain.getPct(sender: sender)
         
         switch sender {
         case zeroPctButton:
@@ -53,7 +48,8 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func calculatePressed(_ sender: UIButton) {
         let total = Float(billTextField.text!)
-        result = (total! + (total! * pctValue!))
+        
+        value = calculateBrain.calculate(total: total!, pct: pct!, step: stepperValue!)
         
         self.performSegue(withIdentifier: "goToResult", sender: self)
         
@@ -62,8 +58,8 @@ class CalculatorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResult"{
             let destination = segue.destination as! ResultViewController
-            let pctForprint = pctValue! * 100
-            destination.calculateResult = result
+            let pctForprint = (value?.pctValue!)! * 100
+            destination.calculateResult = (value?.result)!
             destination.dividePerson = String(format : "%.0f", stepperValue ?? 0.0)
             destination.pct = String(format: "%.0f", pctForprint) + "%"
         }
