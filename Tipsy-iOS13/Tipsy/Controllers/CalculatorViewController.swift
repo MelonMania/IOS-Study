@@ -18,6 +18,7 @@ class CalculatorViewController: UIViewController {
     
     var pctValue : Float?
     var stepperValue : Float?
+    var result : Float?
     
     @IBAction func tipChanged(_ sender: UIButton) {
         sender.isSelected = true
@@ -52,9 +53,20 @@ class CalculatorViewController: UIViewController {
     
     @IBAction func calculatePressed(_ sender: UIButton) {
         let total = Float(billTextField.text!)
-        let result = (total! + (total! * pctValue!)) / stepperValue!
+        result = (total! + (total! * pctValue!))
         
-        print(result)
+        self.performSegue(withIdentifier: "goToResult", sender: self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToResult"{
+            let destination = segue.destination as! ResultViewController
+            let pctForprint = pctValue! * 100
+            destination.calculateResult = result
+            destination.dividePerson = String(format : "%.0f", stepperValue ?? 0.0)
+            destination.pct = String(format: "%.0f", pctForprint) + "%"
+        }
         
     }
     
