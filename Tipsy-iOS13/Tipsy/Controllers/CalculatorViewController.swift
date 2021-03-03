@@ -47,9 +47,9 @@ class CalculatorViewController: UIViewController {
     }
     
     @IBAction func calculatePressed(_ sender: UIButton) {
-        let total = Float(billTextField.text!)
+        let total = Float(billTextField.text ?? "Error")
         
-        value = calculateBrain.calculate(total: total!, pct: pct!, step: stepperValue!)
+        value = calculateBrain.calculate(total: total!, pct: pct ?? 0.0, step: stepperValue ?? 0)
         
         self.performSegue(withIdentifier: "goToResult", sender: self)
         
@@ -58,8 +58,8 @@ class CalculatorViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToResult"{
             let destination = segue.destination as! ResultViewController
-            let pctForprint = (value?.pctValue!)! * 100
-            destination.calculateResult = (value?.result)!
+            let pctForprint = (value?.pctValue)! * 100
+            destination.calculateResult = (value?.result) ?? 0.0
             destination.dividePerson = String(format : "%.0f", stepperValue ?? 0.0)
             destination.pct = String(format: "%.0f", pctForprint) + "%"
         }
