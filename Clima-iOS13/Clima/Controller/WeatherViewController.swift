@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
+class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherModelDelegate{
 
     @IBOutlet weak var conditionImageView: UIImageView!
     @IBOutlet weak var temperatureLabel: UILabel!
@@ -20,6 +20,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         searchTextField.delegate = self
+        weatherManager.delegate = self
         
     }
 
@@ -46,6 +47,7 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
+    
         if let city = searchTextField.text{
             weatherManager.fetchURL(cityName: city)
         }
@@ -54,5 +56,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     }
     
+    func transferWeather(_ weatherManager : WeatherManager, weather : WeatherModel)  {
+        temperatureLabel.text = weather.temperatureString
+        cityLabel.text = weather.cityName
+        conditionImageView.image = UIImage(systemName: weather.conditionName)
+    }
+    
+    func didFailwithError(_ weatherManager: WeatherManager, error: Error) {
+        print(error)
+    }
 }
 
