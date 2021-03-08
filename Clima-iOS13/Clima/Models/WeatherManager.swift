@@ -1,4 +1,5 @@
 import UIKit
+import CoreLocation
 
 struct WeatherManager {
     
@@ -9,6 +10,12 @@ struct WeatherManager {
         let urlString = "\(weatherURL)&q=\(cityName)"
         performRequest(with : urlString)
     }
+    
+    mutating func fetchURLdgree(lat : CLLocationDegrees, lon : CLLocationDegrees) {
+        let urlString = "\(weatherURL)&lat=\(lat)&lon=\(lon)"
+        performRequest(with : urlString)
+    }
+    
     
     func performRequest(with urlString : String) {
         if let url = URL(string: urlString){
