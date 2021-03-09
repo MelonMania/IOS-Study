@@ -12,39 +12,38 @@ struct CoinManager {
     
     var delegate : CoinModelDelegate?
     
-    let baseURL = "https://rest.coinapi.io/v1/exchangerate/BTC"
-    let apiKey = "F5EDF9C8-7E8A-43A6-813F-943AE4FE953A"
+    var baseURL = "https://rest.coinapi.io/v1/exchangerate"
+    let apiKey = "6E240919-E924-4279-BEE9-17EBCF151966"
     
-    let currencyArray = ["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]
+    let currencyArray = [["ETH","BTC","USD"],["AUD", "BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","SEK","SGD","USD","ZAR"]]
     
-    //    func getCoinPrice(for currency: String) -> Int {
-    //    }
-    
-    func fetchURL(_ currency : String) {
-        let updatedURL = "\(baseURL)/\(currency)?apikey=\(apiKey)"
+ 
+    func fetchURL(coinName : String, currency : String) {
+        let updatedURL = "\(baseURL)/\(coinName)/\(currency)?apikey=\(apiKey)"
+        print(updatedURL)
         performRequest(with: updatedURL)
     }
     
     func performRequest(with urlString : String) {
         if let url = URL(string: urlString){
             let session = URLSession(configuration: .default)
-            let task = session.dataTask(with: url) { (data, urlResponse, error) in
+            let task = session.dataTask(with: url) { (data, urlResponse, error) in // Closure 이용
                 if error != nil {
                     print(error!)
                 }
                 if let safeData = data {
-                    DispatchQueue.main.async {
+                    DispatchQueue.main.async { // 비동기
                         if let coinData = parseJSON(data: safeData){
                             delegate?.didUpdateRate(coinData)
                         }
                     }
                 }
             }
-            task.resume()
+            task.resume() // task 실행시 필수
         }
     }
     
-   
+    
     
     func parseJSON(data : Data) -> CoinModel?{
         let decoder = JSONDecoder()
@@ -53,8 +52,9 @@ struct CoinManager {
             let decodedData = try decoder.decode(CoinData.self, from: data)
             let rate = decodedData.rate
             let currency = decodedData.asset_id_quote
+            let coinName = decodedData.asset_id_base
             
-            let coin = CoinModel(rate: rate, currency: currency)
+            let coin = CoinModel(rate: rate, coinName: coinName, currency: currency)
             return coin
         }
         catch{

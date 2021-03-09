@@ -15,6 +15,7 @@ protocol CoinModelDelegate {
 
 struct CoinModel {
     let rate : Float
+    let coinName : String
     let currency : String
     
     var rateToString : String{
